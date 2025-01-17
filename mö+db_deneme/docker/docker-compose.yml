@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt_broker
+    ports:
+      - "1883:1883" 
+      - "9001:9001"  
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminadmin
+      - DOCKER_INFLUXDB_INIT_ORG=canbus
+      - DOCKER_INFLUXDB_INIT_BUCKET=can_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=zvVmH29guaZMTKp_ND5TJVISJuS0kBsDnbvBcoVVSWi8m1znXyOaJaPboGSBriX-1VA-J_7WICAUOSpsB54r2Q==
+
+volumes:
+  influxdb_data:
